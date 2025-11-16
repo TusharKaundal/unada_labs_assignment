@@ -72,15 +72,16 @@ body {
   position: relative;
 }
 
-.backImage {
+.solarSystem {
   width: 100%;
   position: fixed;
+  top: 23.5rem;
   left: 0;
   right: 0;
   object-fit: contain;
-  bottom: -20rem;
   transition: all 0.5s ease-in-out;
 }
+
 
 .planet {
   display: flex;
@@ -96,15 +97,52 @@ body {
   text-transform: uppercase;
   letter-spacing: 2rem;
   margin-inline: auto;
+  width: fit-content;
+  transition: all 0.5s ease-in-out;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    margin-left: -2rem;
+  }
 }
 
 .planet-infos {
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  justify-content: center;
   align-items: center;
   max-width: 100rem;
   width: 100%;
+  transition: all 0.5s ease-in-out;
+  gap: 1.5rem;
+  text-align: center;
+  grid-template-columns: repeat(3, 8rem);
+  grid-template-areas:
+    "A . B"
+    ". C ."
+    "D . E";
 }
+
+.info:nth-of-type(1) {
+  grid-area: A;
+}
+
+.info:nth-of-type(2) {
+  grid-area: B;
+}
+
+.info:nth-of-type(3) {
+  grid-area: C;
+}
+
+.info:nth-of-type(4) {
+  grid-area: D;
+}
+
+.info:nth-of-type(5) {
+  grid-area: E;
+}
+
 
 .planet-infos .info h4 {
   text-transform: uppercase;
@@ -113,73 +151,203 @@ body {
   margin-bottom: 2px;
 }
 
+
+.planet-infos .info p {
+  transition: all 0.5s ease-in-out;
+}
+
 .planet-image-wrap {
   width: 100%;
   display: flex;
   position: fixed;
   justify-content: space-between;
   align-items: center;
+  top: 35rem;
   left: 0;
   right: 0;
-  bottom: 2rem;
   transition: all 0.5s ease-in-out;
 }
 
+
 .planet-image-wrap .main-img {
-  width: 25rem;
-  height: 25rem;
+  width: 10rem;
+  height: 10rem;
   object-fit: cover;
   margin-inline: auto;
+  position: relative;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   transition: all 0.5s ease-in-out;
 }
 
+.planet-image-wrap .prev-img img,
+.planet-image-wrap .next-img img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  transition: all 0.5s ease-in-out;
+}
+
+
 .planet-image-wrap .prev-img,
 .planet-image-wrap .next-img {
-  width: 10rem;
-  height: 10rem;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+  gap: 1rem;
+
+  h4 {
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    transition: all 0.5s ease-in-out;
+  }
 
 }
 
+
 .planet-image-wrap .prev-img {
-  position: relative;
-  left: -4rem;
+  position: absolute;
+  left: -3rem;
+
+  h4 {
+    transform: translateX(-20px);
+  }
 }
 
 
 .planet-image-wrap .next-img {
-  position: relative;
-  right: -4rem;
+  position: absolute;
+  right: -3rem;
+
+  h4 {
+    transform: translateX(30px);
+  }
 }
 
+/*animation*/
+.fade-in {
+  opacity: 1;
+  animation-name: fadeInOpacity;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+  animation-duration: 1s;
+}
 
-@media (max-width: 600px) {
-
-  .backImage {
-    top: 14rem;
-    bottom: unset;
+@keyframes fadeInOpacity {
+  0% {
+    opacity: 0;
   }
 
-  .planet-image-wrap {
-    top: 18rem;
-    bottom: unset;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 470px) {
+
+  .planet-name {
+    font-size: 1.2rem;
+  }
+
+  .planet-infos {
+    grid-template-columns: 1fr;
+    grid-template-areas: "A"
+      "B"
+      "C"
+      "D"
+      "E";
+  }
+
+  .solarSystem {
+    top: 30rem;
   }
 
   .planet-image-wrap .main-img {
-    width: 10rem;
-    height: 10rem;
-    object-fit: cover;
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .planet-image-wrap .prev-img img,
+  .planet-image-wrap .next-img img {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .solarSystem {
+    bottom: -20rem;
+    top: unset;
+  }
+
+  .planet-image-wrap {
+    top: unset;
+    bottom: 2rem;
+  }
+
+  .planet-infos {
+    max-width: 60rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 
   .planet-image-wrap .prev-img,
   .planet-image-wrap .next-img {
-    width: 5rem;
-    height: 5rem;
-    object-fit: cover;
+    h4 {
+      font-size: 0.9rem;
+      transform: none;
+    }
+  }
 
+  .planet-image-wrap .main-img {
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .planet-image-wrap .prev-img img,
+  .planet-image-wrap .next-img img {
+    width: 8rem;
+    height: 8rem;
+  }
+}
+
+
+@media (min-width: 900px) {
+  .solarSystem {
+    bottom: -30rem;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .solarSystem {
+    bottom: -60rem;
+  }
+
+  .planet-image-wrap {
+    bottom: 2rem;
+  }
+
+  .planet-image-wrap .main-img {
+    width: 25rem;
+    height: 25rem;
+
+  }
+
+  .planet-image-wrap .prev-img,
+  .planet-image-wrap .next-img {
+    flex-direction: row;
+
+    h4 {
+      font-size: 1.5rem;
+      transform: none;
+    }
+  }
+
+  .planet-image-wrap .prev-img img,
+  .planet-image-wrap .next-img img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
   }
 }

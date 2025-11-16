@@ -62,32 +62,51 @@ function App() {
   const prevIndex = (imageIndex - 1 + planetsData.length) % planetsData.length;
   const nextIndex = (imageIndex + 1) % planetsData.length;
   const planetRef = useRef(null);
+  const solarRef = useRef(null);
 
   function handlePrev() {
+    if (!planetRef.current || !solarRef.current) return;
     setImageIndex(prevIndex);
-    const finalAngle = planetAngle - 20;
+    const finalAngle = planetAngle - (prevIndex > 0 ? 60 : 0);
     const overshootAngle = finalAngle - 10;
 
-    if (planetRef.current && prevIndex > 0) {
+    if (prevIndex < 3) {
       planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
       setTimeout(() => {
-        if (!planetRef.current) return;
         planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
+        solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
+      }, 500);
+    } else if (prevIndex === 3) {
+      planetRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+      setTimeout(() => {
+        planetRef.current.style.transform = `rotate(${0}deg)`;
+        solarRef.current.style.transform = `rotate(${0}deg)`;
       }, 500);
     }
     setPlanetAngle(finalAngle);
   }
 
   function handleNext() {
+    if (!planetRef.current || !solarRef.current) return;
     setImageIndex(nextIndex);
-    const finalAngle = planetAngle + 20;
+    const finalAngle = planetAngle + (nextIndex > 0 ? 60 : 0);
     const overshootAngle = finalAngle + 10;
 
-    if (planetRef.current && nextIndex > 0) {
+    if (nextIndex > 0) {
       planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
       setTimeout(() => {
-        if (!planetRef.current) return;
         planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
+        solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
+      }, 500);
+    } else if (nextIndex === 0) {
+      planetRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+      setTimeout(() => {
+        planetRef.current.style.transform = `rotate(${0}deg)`;
+        solarRef.current.style.transform = `rotate(${0}deg)`;
       }, 500);
     }
     setPlanetAngle(finalAngle);
@@ -109,53 +128,65 @@ function App() {
         </nav>
       </header>
       <main className="planets-wrap">
-        <div className="planet">
-          <h1 className="planet-name">{planetsData[imageIndex].name}</h1>
-          <div className="planet-infos">
-            <div className="info">
-              <h4>Galaxy</h4>
-              <p>{planetsData[imageIndex].galaxy}</p>
+        {imageIndex >= 0 && (
+          <div className="planet">
+            <h1 className="planet-name">{planetsData[imageIndex].name}</h1>
+            <div className={`planet-infos`}>
+              <div className="info">
+                <h4>Galaxy</h4>
+                <p>{planetsData[imageIndex].galaxy}</p>
+              </div>
+              <div className="info">
+                <h4>Diameter</h4>
+                <p>{planetsData[imageIndex].diameter} km</p>
+              </div>
+              <div className="info">
+                <h4>Day Length</h4>
+                <p>{planetsData[imageIndex].dayLength} Earth hours</p>
+              </div>
+              <div className="info">
+                <h4>Avg Temperature</h4>
+                <p>{planetsData[imageIndex].avgTemperature}</p>
+              </div>
+              <div className="info">
+                <h4>Climate</h4>
+                <p>{planetsData[imageIndex].climate}</p>
+              </div>
             </div>
-            <div className="info">
-              <h4>Diameter</h4>
-              <p>{planetsData[imageIndex].diameter} km</p>
-            </div>
-            <div className="info">
-              <h4>Day Length</h4>
-              <p>{planetsData[imageIndex].dayLength} Earth hours</p>
-            </div>
-            <div className="info">
-              <h4>Avg Temperature</h4>
-              <p>{planetsData[imageIndex].avgTemperature}</p>
-            </div>
-            <div className="info">
-              <h4>Climate</h4>
-              <p>{planetsData[imageIndex].climate}</p>
-            </div>
-          </div>
-          <div className="planet-image-wrap">
-            <img
-              className="prev-img"
-              src={planetsData[prevIndex]?.image}
-              alt={planetsData[prevIndex]?.name}
-              onClick={handlePrev}
-            />
-            <img
-              ref={planetRef}
-              className="main-img"
-              src={planetsData[imageIndex].image}
-              alt={planetsData[imageIndex].name}
-            />
-            <img
-              className="next-img"
-              src={planetsData[nextIndex]?.image}
-              alt={planetsData[nextIndex]?.name}
-              onClick={handleNext}
-            />
-          </div>
-        </div>
+            <div className="planet-image-wrap">
+              <div className="prev-img">
+                <img
+                  src={planetsData[prevIndex]?.image}
+                  alt={planetsData[prevIndex]?.name}
+                  onClick={handlePrev}
+                />
+                <h4>{planetsData[prevIndex]?.name}</h4>
+              </div>
 
-        <img className="backImage" src={SolarSytem} alt="Solar System" />
+              <img
+                ref={planetRef}
+                className="main-img"
+                src={planetsData[imageIndex].image}
+                alt={planetsData[imageIndex].name}
+              />
+              <div className="next-img">
+                <h4>{planetsData[nextIndex]?.name}</h4>
+                <img
+                  src={planetsData[nextIndex]?.image}
+                  alt={planetsData[nextIndex]?.name}
+                  onClick={handleNext}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <img
+          ref={solarRef}
+          className="solarSystem"
+          src={SolarSytem}
+          alt="Solar System"
+        />
       </main>
     </div>
   );
