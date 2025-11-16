@@ -47,11 +47,55 @@ body {
   width: 100%;
 }
 
-.nav-links {
+.nav-mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-transform: uppercase;
+
+  h2 {
+    letter-spacing: 1rem;
+  }
+}
+
+.nav-mob-links {
+  position: absolute;
+  top: 3rem;
+  left: 0;
   list-style: none;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+  width: 200px;
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  animation: fadeInOpacity 0.5s ease-in-out;
+}
+
+.menu-button {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  border-radius: 0.4rem;
+  outline: none;
+  padding: 5px;
+  border: 1px solid white;
+  color: white;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: none;
   font-size: 1rem;
 }
 
@@ -203,7 +247,6 @@ body {
 
 }
 
-
 .planet-image-wrap .prev-img {
   position: absolute;
   left: -3rem;
@@ -221,15 +264,6 @@ body {
   h4 {
     transform: translateX(30px);
   }
-}
-
-/*animation*/
-.fade-in {
-  opacity: 1;
-  animation-name: fadeInOpacity;
-  animation-iteration-count: 1;
-  animation-timing-function: ease-in-out;
-  animation-duration: 1s;
 }
 
 @keyframes fadeInOpacity {
@@ -274,9 +308,20 @@ body {
 }
 
 @media (min-width: 700px) {
+
+  .nav-mobile {
+    display: none;
+  }
+
   .solarSystem {
     bottom: -20rem;
     top: unset;
+  }
+
+  .nav-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .planet-image-wrap {
@@ -288,6 +333,7 @@ body {
     max-width: 60rem;
     width: 100%;
     display: flex;
+    text-align: left;
     justify-content: space-between;
   }
 

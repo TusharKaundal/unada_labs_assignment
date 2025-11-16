@@ -58,63 +58,60 @@ import { useRef, useState } from "react";
 function App() {
   const [imageIndex, setImageIndex] = useState(0);
   const [planetAngle, setPlanetAngle] = useState(0);
+  const [isOpen, setMenuOpen] = useState(false);
 
   const prevIndex = (imageIndex - 1 + planetsData.length) % planetsData.length;
   const nextIndex = (imageIndex + 1) % planetsData.length;
   const planetRef = useRef(null);
   const solarRef = useRef(null);
 
+  const ROTATION_STEP = 60;
+  const OVERSHOOT = 10;
+
   function handlePrev() {
     if (!planetRef.current || !solarRef.current) return;
-    setImageIndex(prevIndex);
-    const finalAngle = planetAngle - (prevIndex > 0 ? 60 : 0);
-    const overshootAngle = finalAngle - 10;
 
-    if (prevIndex < 3) {
-      planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
-      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      setTimeout(() => {
-        planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
-        solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
-      }, 500);
-    } else if (prevIndex === 3) {
-      planetRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      setTimeout(() => {
-        planetRef.current.style.transform = `rotate(${0}deg)`;
-        solarRef.current.style.transform = `rotate(${0}deg)`;
-      }, 500);
-    }
+    const newIndex = prevIndex;
+    setImageIndex(newIndex);
+
+    const finalAngle = planetAngle - ROTATION_STEP;
+    const overshootAngle = finalAngle - OVERSHOOT;
+
+    planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
+    solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+
+    setTimeout(() => {
+      planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
+    }, 500);
+
     setPlanetAngle(finalAngle);
   }
 
   function handleNext() {
     if (!planetRef.current || !solarRef.current) return;
-    setImageIndex(nextIndex);
-    const finalAngle = planetAngle + (nextIndex > 0 ? 60 : 0);
-    const overshootAngle = finalAngle + 10;
 
-    if (nextIndex > 0) {
-      planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
-      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      setTimeout(() => {
-        planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
-        solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
-      }, 500);
-    } else if (nextIndex === 0) {
-      planetRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
-      setTimeout(() => {
-        planetRef.current.style.transform = `rotate(${0}deg)`;
-        solarRef.current.style.transform = `rotate(${0}deg)`;
-      }, 500);
-    }
+    const newIndex = nextIndex;
+    setImageIndex(newIndex);
+
+    const finalAngle = planetAngle + ROTATION_STEP;
+    const overshootAngle = finalAngle + OVERSHOOT;
+
+    planetRef.current.style.transform = `rotate(${overshootAngle}deg)`;
+    solarRef.current.style.transform = `rotate(${-overshootAngle}deg)`;
+
+    setTimeout(() => {
+      planetRef.current.style.transform = `rotate(${finalAngle}deg)`;
+      solarRef.current.style.transform = `rotate(${-finalAngle}deg)`;
+    }, 500);
+
     setPlanetAngle(finalAngle);
   }
+
   return (
     <div className="app">
       <header className="header">
-        <nav>
+        <nav className="nav-desktop">
           <ul className="nav-links">
             {headers.map((link, idx) => (
               <li
@@ -125,6 +122,44 @@ function App() {
               </li>
             ))}
           </ul>
+        </nav>
+        <nav className="nav-mobile">
+          <button
+            className="menu-button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-menu-icon lucide-menu"
+            >
+              <path d="M4 5h16" />
+              <path d="M4 12h16" />
+              <path d="M4 19h16" />
+            </svg>
+          </button>
+          <h2>{headers[3]}</h2>
+          {isOpen && (
+            <ul className="nav-mob-links">
+              {headers
+                .filter((_, idx) => idx !== 3)
+                .map((link, idx) => (
+                  <li
+                    key={link}
+                    className={`nav-item${idx === 3 ? " uppercase" : ""}`}
+                  >
+                    {link}
+                  </li>
+                ))}
+            </ul>
+          )}
         </nav>
       </header>
       <main className="planets-wrap">
