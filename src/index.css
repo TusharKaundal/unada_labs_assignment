@@ -113,6 +113,7 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 3000;
   text-transform: uppercase;
 
   h2 {
