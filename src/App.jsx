@@ -12,6 +12,8 @@ import etheron from "./assets/images/etheron.png";
 import lumenara from "./assets/images/lumenara.png";
 import theronix from "./assets/images/theronix.png";
 import orionis from "./assets/images/orionis.png";
+import stars from "./assets/images/Star.png";
+import solarSytem from "./assets/images/solarsystem.png";
 
 const planetsData = [
   {
@@ -52,7 +54,6 @@ const planetsData = [
   },
 ];
 
-import SolarSytem from "./assets/images/solarsystem.png";
 import { useRef, useState } from "react";
 
 function App() {
@@ -110,6 +111,13 @@ function App() {
 
   return (
     <div className="app">
+      <img
+        className={`stars ${
+          imageIndex >= 2 ? "stars-expand" : "stars-collapse"
+        }`}
+        src={stars}
+        alt="stars"
+      />
       <header className="header">
         <nav className="nav-desktop">
           <ul className="nav-links">
@@ -166,6 +174,13 @@ function App() {
         {imageIndex >= 0 && (
           <div className="planet">
             <h1 className="planet-name">{planetsData[imageIndex].name}</h1>
+            <div
+              className={`blurRec left blurRecgradient_${imageIndex + 1}`}
+            ></div>
+            <div
+              className={`blurRec right blurRecgradient_${imageIndex + 1}`}
+            ></div>
+            <div></div>
             <div className={`planet-infos`}>
               <div className="info">
                 <h4>Galaxy</h4>
@@ -188,38 +203,37 @@ function App() {
                 <p>{planetsData[imageIndex].climate}</p>
               </div>
             </div>
-            <div className="planet-image-wrap">
-              <div className="prev-img">
-                <img
-                  src={planetsData[prevIndex]?.image}
-                  alt={planetsData[prevIndex]?.name}
-                  onClick={handlePrev}
-                />
-                <h4>{planetsData[prevIndex]?.name}</h4>
-              </div>
-
-              <img
-                ref={planetRef}
-                className="main-img"
-                src={planetsData[imageIndex].image}
-                alt={planetsData[imageIndex].name}
-              />
-              <div className="next-img">
-                <h4>{planetsData[nextIndex]?.name}</h4>
-                <img
-                  src={planetsData[nextIndex]?.image}
-                  alt={planetsData[nextIndex]?.name}
-                  onClick={handleNext}
-                />
-              </div>
-            </div>
           </div>
         )}
+        <div className="planet-image-wrap">
+          <div className="prev-img">
+            <img
+              src={planetsData[prevIndex]?.image}
+              alt={planetsData[prevIndex]?.name}
+              onClick={handlePrev}
+            />
+            <h4>{planetsData[prevIndex]?.name}</h4>
+          </div>
 
+          <img
+            ref={planetRef}
+            className={`main-img dropShadow_${imageIndex + 1}`}
+            src={planetsData[imageIndex].image}
+            alt={planetsData[imageIndex].name}
+          />
+          <div className="next-img">
+            <h4>{planetsData[nextIndex]?.name}</h4>
+            <img
+              src={planetsData[nextIndex]?.image}
+              alt={planetsData[nextIndex]?.name}
+              onClick={handleNext}
+            />
+          </div>
+        </div>
         <img
           ref={solarRef}
           className="solarSystem"
-          src={SolarSytem}
+          src={solarSytem}
           alt="Solar System"
         />
       </main>
